@@ -15,12 +15,12 @@
 
 FROM ubuntu:xenial
 
-ENV LEDE_VERSION=v17.01.4
+ENV LEDE_VERSION=v21.02.0-rc4
 
 RUN set -ex \
     && apt update \
     && apt install --no-install-recommends --no-install-suggests -y \
-    subversion g++ zlib1g-dev build-essential git python rsync man-db \
+    python3 subversion g++ zlib1g-dev build-essential git python rsync man-db \
     libncurses5-dev gawk gettext unzip file libssl-dev wget openssl \
     ca-certificates libcurl4-openssl-dev vim libjson-c-dev pkg-config \
     && rm -rf /var/lib/apt/lists/* \

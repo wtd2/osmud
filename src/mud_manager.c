@@ -61,8 +61,12 @@ void buildDhcpEventsLogMsg(char *buf, int bufSize)
 int buildPortRange(char *portBuf, int portBufSize, AceEntry *ace)
 {
 	int retval = 0; /* Return > 0 if there is an error with port assignments */
-
-	snprintf(portBuf, portBufSize, "%s:%s", ace->lowerPort, ace->upperPort);
+	if (ace->lowerPort == NULL)
+		snprintf(portBuf, portBufSize, "any");
+	else if (ace->upperPort == NULL)
+		snprintf(portBuf, portBufSize, "any");
+	else
+		snprintf(portBuf, portBufSize, "%s:%s", ace->lowerPort, ace->upperPort);
 	portBuf[portBufSize-1] = '\0';
 
 	return retval;
@@ -166,7 +170,7 @@ int processToAccess(char *aclName, char *aclType, AclEntry *acl, DhcpEvent *even
 		} else {
     		logOmsGeneralMessage(OMS_WARN, OMS_SUBSYS_DEVICE_INTERFACE, "Ignoring unimplemented *to* ace rule.");
     		/* retval = 1;  -- right now, do not fail entire transaction for non-implemented MUD actions * It's an error situation */
-		}
+		}	
 	}
 
 	return retval;
@@ -226,7 +230,7 @@ int executeMudWithDhcpContext(DhcpEvent *dhcpEvent)
 													WAN_DEVICE_NAME,		/* destDevice - lan or wan */
 													"all", 					/* protocol - tcp/udp */
 													"REJECT-ALL", 			/* the name of the rule -- TODO: Better rule names by device name*/
-													"DENY",					/* ACCEPT or DENY or REJECT */
+													"DROP",					/* ACCEPT or DROP or REJECT */
 													"all",
 													dhcpEvent->hostName		/* hostname of the new device */ );
 			if (actionResult) {
@@ -325,8 +329,11 @@ void executeOldDhcpAction(DhcpEvent *dhcpEvent)
 
 	if (dhcpEvent)
 	{
-		/* TODO: Need to validate the IP address is the same as it was the last time we saw this */
-		/*       If not, we need to do a remove from the device in the MUD DB file and re-add it */
+		/* Modified by Wenhao Zhang, a dummy implementation that remove all the rules */
+		/* and do everything as NEW                                                   */
+		removeFirewallIPRule(dhcpEvent->ipAddress, dhcpEvent->macAddress);
+		commitAndApplyFirewallRules();
+		executeNewDhcpAction(dhcpEvent);
 	}
 }
 

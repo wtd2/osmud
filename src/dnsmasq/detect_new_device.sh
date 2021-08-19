@@ -43,16 +43,16 @@ if [[ -z "${DNSMASQ_MUD_URL/ //}" ]]; then
 fi
 
 if [ "$1" == "add" ]; then
-  msg="|NEW|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_REQUESTED_OPTIONS}|MUD|${DNSMASQ_MUD_URL}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
+  msg="|NEW|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_MUD_URL}|MUD|${DNSMASQ_REQUESTED_OPTIONS}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
   echo `date +%FT%T`$msg >> /var/log/dhcpmasq.txt
 fi
 
 if [ "$1" == "old" ]; then
-  msg="|OLD|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_REQUESTED_OPTIONS}|MUD|${DNSMASQ_MUD_URL}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
+  msg="|OLD|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_MUD_URL}|MUD|${DNSMASQ_REQUESTED_OPTIONS}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
   echo `date +%FT%T`$msg >> /var/log/dhcpmasq.txt
 fi
 
 if [ "$1" == "del" ]; then                                                                     
-  msg="|DEL|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_REQUESTED_OPTIONS}|MUD|${DNSMASQ_MUD_URL}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
+  msg="|DEL|`uci get system.@system[0].hostname`.`uci get dhcp.@dnsmasq[0].domain`|DHCP|${DNSMASQ_MUD_URL}|MUD|${DNSMASQ_REQUESTED_OPTIONS}|${DNSMASQ_VENDOR_CLASS}|$2|$3|$4|"
   echo `date +%FT%T`$msg >> /var/log/dhcpmasq.txt                                   
 fi
